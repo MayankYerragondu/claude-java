@@ -1,0 +1,89 @@
+openapi: 3.0.3
+
+info:
+  title: CaludeTestApp API
+  description: REST API documentation for CaludeTestApp
+  version: 0.0.1-SNAPSHOT
+  contact:
+    name: CaludeTestApp Team
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+tags:
+  - name: Test
+    description: Endpoints for testing the application
+
+paths:
+  /test:
+    get:
+      tags:
+        - Test
+      summary: Get test data
+      description: Returns a Data object with content retrieved from TestService
+      operationId: getData
+      responses:
+        '200':
+          description: Successfully retrieved data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Data'
+              example:
+                content: This is dummy content from TestService
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 400
+                error: Bad Request
+                message: Validation failed
+                timestamp: '2026-04-15T10:30:00'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 500
+                error: Internal Server Error
+                message: An unexpected error occurred
+                timestamp: '2026-04-15T10:30:00'
+
+components:
+  schemas:
+    Data:
+      type: object
+      description: Response payload containing the requested data
+      properties:
+        content:
+          type: string
+          description: The content of the data
+          example: This is dummy content from TestService
+
+    ErrorResponse:
+      type: object
+      description: Standard error response returned when an exception occurs
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+          example: 400
+        error:
+          type: string
+          description: Short description of the HTTP status
+          example: Bad Request
+        message:
+          type: string
+          description: Detailed error message
+          example: Validation failed for field 'name'
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the error occurred
+          example: '2026-04-15T10:30:00'
